@@ -223,10 +223,10 @@ class Client
             stream_context_set_option($this->context, $options);
             $message = file_get_contents($this->uri, false, $this->context);
 
-            $this->throwHttpExceptionOnHttpError($http_response_header);
+            $this->throwHttpExceptionOnHttpError($http_response_header ?? null);
             $this->deliverResponses($message);
         } catch (ErrorException $exception) {
-            $this->throwHttpExceptionOnHttpError($http_response_header);
+            $this->throwHttpExceptionOnHttpError($http_response_header ?? null);
             throw $exception;
         } finally {
             restore_error_handler();
@@ -449,7 +449,7 @@ class Client
     public static function onError($level, $message, $file, $line)
     {
         $message = trim($message);
-        $code = null;
+        $code = 0;
 
         throw new ErrorException($message, $code, $level, $file, $line);
     }
